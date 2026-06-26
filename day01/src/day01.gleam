@@ -111,4 +111,9 @@ pub fn main() -> Nil {
     <> int.to_string(lib.sum_gas_a(int_list))
     <> ". Correct = 3337766.",
   )
+  io.println(
+    "Part B answer = "
+    <> int.to_string(lib.sum_gas_b(int_list))
+    <> ". Correct = 5003788.\n",
+  )
 }
