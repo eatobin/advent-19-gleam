@@ -1,17 +1,18 @@
+import gleam/dict
 import gleam/int
-import gleam/list
-import gleam/string
+import gleam/io
+import lib
 
 pub fn main() {
-  let input = "1, 2, 3, invalid, 4"
+  let input = "10, 22, 30, invalid, 40"
+  let tester = lib.make_memory(input)
+  echo tester
+  // 2. Perform the lookup
+  let lookup_result = dict.get(tester, 1)
 
-  let ints =
-    input
-    |> string.split(",")
-    |> list.map(string.trim)
-    // filter_map automatically drops any Error(Nil) results
-    |> list.filter_map(int.parse)
-
-  echo ints
-  // Output: [1, 2, 3, 4]
+  // 3. Handle the result
+  case lookup_result {
+    Ok(my_num) -> io.println("Found number: " <> int.to_string(my_num))
+    Error(Nil) -> io.println("Number not found")
+  }
 }

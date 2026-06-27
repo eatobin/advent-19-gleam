@@ -1,25 +1,30 @@
+import gleam/dict
+import gleam/int
 import gleam/list
+import gleam/string
 
-fn gas(my_module: Int) -> Int {
-  { my_module / 3 } - 2
-}
+type MemoryAsCSVString =
+  String
 
-pub fn sum_gas_a(gas_list: List(Int)) -> Int {
-  gas_list |> list.map(gas) |> list.fold(0, fn(acc, x) { acc + x })
-}
+type Memory =
+  dict.Dict(Int, Int)
 
-fn gas_plus(my_module: Int) -> Int {
-  gas_plus_loop(my_module, 0)
+pub fn make_memory(memory_as_csv_string_param: MemoryAsCSVString) -> Memory {
+  let values =
+    memory_as_csv_string_param
+    |> string.split(",")
+    |> list.map(string.trim)
+    |> list.filter_map(int.parse)
+  dict.from_list(
+    list.index_map(values, fn(element, index) { #(index, element) }),
+  )
 }
-
-fn gas_plus_loop(my_module: Int, acc: Int) -> Int {
-  let new_gas = gas(my_module)
-  case new_gas {
-    ng if ng <= 0 -> acc
-    _ -> gas_plus_loop(new_gas, acc + new_gas)
-  }
-}
-
-pub fn sum_gas_b(gas_list: List(Int)) -> Int {
-  gas_list |> list.map(gas_plus) |> list.fold(0, fn(acc, x) { acc + x })
-}
+// makeInstruction :: Int -> Instruction
+// makeInstruction op =
+//   Map.fromList instructionAsKVTupleList
+//   where
+//     keys = ['a', 'b', 'c', 'd', 'e']
+//     opAsString = show op
+//     paddedOp = replicate (5 - length opAsString) '0' ++ opAsString
+//     values = map DC.digitToInt paddedOp
+//     instructionAsKVTupleList = zip keys values
