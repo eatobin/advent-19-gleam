@@ -15,4 +15,13 @@ pub fn main() {
     Ok(my_num) -> io.println("Found number: " <> int.to_string(my_num))
     Error(Nil) -> io.println("Number not found")
   }
+
+  let vv = lib.make_instruction(1234)
+  echo vv
+
+  let lookup_result_2 = dict.get(vv, "e")
+  case lookup_result_2 {
+    Ok(my_num) -> io.println("Found number: " <> int.to_string(my_num))
+    Error(Nil) -> io.println("Number not found")
+  }
 }
