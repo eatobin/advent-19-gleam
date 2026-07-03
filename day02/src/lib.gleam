@@ -2,12 +2,13 @@ import gleam/dict
 import gleam/int
 import gleam/list
 import gleam/string
+import iv
 
 type MemoryAsCSVString =
   String
 
 type Memory =
-  dict.Dict(Int, Int)
+  iv.Array(Int)
 
 type Instruction =
   dict.Dict(String, Int)
@@ -18,9 +19,7 @@ pub fn make_memory(memory_as_csv_string_param: MemoryAsCSVString) -> Memory {
     |> string.split(",")
     |> list.map(string.trim)
     |> list.filter_map(int.parse)
-  dict.from_list(
-    list.index_map(values, fn(element, index) { #(index, element) }),
-  )
+  iv.from_list(values)
 }
 
 pub fn make_instruction(op: Int) -> Instruction {

@@ -1,6 +1,6 @@
-import gleam/dict
 import gleam/int
 import gleam/io
+import iv
 import lib
 
 pub fn main() {
@@ -8,7 +8,7 @@ pub fn main() {
   let tester = lib.make_memory(input)
   echo tester
   // 2. Perform the lookup
-  let lookup_result = dict.get(tester, 1)
+  let lookup_result = iv.get(from: tester, at: 1)
 
   // 3. Handle the result
   case lookup_result {
@@ -16,12 +16,14 @@ pub fn main() {
     Error(Nil) -> io.println("Number not found")
   }
 
-  let vv = lib.make_instruction(1234)
-  echo vv
-
-  let lookup_result_2 = dict.get(vv, "e")
+  let lookup_result_2 = iv.get(from: tester, at: 11)
   case lookup_result_2 {
     Ok(my_num) -> io.println("Found number: " <> int.to_string(my_num))
     Error(Nil) -> io.println("Number not found")
   }
+
+  io.println("")
+
+  let vv = lib.make_instruction(1234)
+  echo vv
 }
