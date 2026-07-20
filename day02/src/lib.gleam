@@ -125,6 +125,6 @@ pub fn add(instruction: Instruction, int_code: IntCode) -> IntCode {
       at: a_param(instruction, int_code),
       to: { c_param(instruction, int_code) + b_param(instruction, int_code) },
     ),
-    actions: int_code.actions,
+    actions: [Add, ..int_code.actions],
   )
 }
