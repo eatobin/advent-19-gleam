@@ -13,6 +13,31 @@ type Memory =
 type Instruction =
   dict.Dict(String, Int)
 
+type Pointer =
+  Int
+
+pub type IntCodeAction {
+  Add
+  Multiply
+  Exit
+}
+
+type Actions =
+  List(IntCodeAction)
+
+pub type IntCode {
+  IntCode(pointer: Pointer, memory: Memory, actions: Actions)
+}
+
+type PointerOffset =
+  Int
+
+const pointer_offset_c: PointerOffset = 1
+
+const pointer_offset_b: PointerOffset = 2
+
+const pointer_offset_a: PointerOffset = 3
+
 pub fn make_memory(memory_as_csv_string_param: MemoryAsCSVString) -> Memory {
   let values: List(Int) =
     memory_as_csv_string_param
