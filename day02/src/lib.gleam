@@ -10,6 +10,12 @@ type MemoryAsCSVString =
 type Memory =
   iv.Array(Int)
 
+type Key =
+  Int
+
+type Value =
+  Int
+
 type Instruction =
   dict.Dict(String, Int)
 
@@ -60,4 +66,15 @@ pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
   mem
   |> iv.try_set(at: 1, to: noun)
   |> iv.try_set(at: 2, to: verb)
+}
+
+pub fn key_to_key(
+  int_code: IntCode,
+  pointer_offset_param: PointerOffset,
+) -> Key {
+  iv.get_or_default(
+    from: int_code.memory,
+    at: { int_code.pointer + pointer_offset_param },
+    or: -1,
+  )
 }
