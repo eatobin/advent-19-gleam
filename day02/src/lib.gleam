@@ -1,6 +1,7 @@
 import gleam/dict
 import gleam/int
 import gleam/list
+import gleam/result
 import gleam/string
 import iv
 
@@ -90,4 +91,28 @@ fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
     ),
     or: -1,
   )
+}
+
+fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
+  case dict.get(instruction, "a") |> result.unwrap(-1) {
+    // a-p-w
+    0 -> pw(int_code, pointer_offset_a)
+    _ -> -1
+  }
+}
+
+fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
+  case dict.get(instruction, "b") |> result.unwrap(-1) {
+    // b-p-r
+    0 -> pr(int_code, pointer_offset_a)
+    _ -> -1
+  }
+}
+
+fn c_param(instruction: Instruction, int_code: IntCode) -> Int {
+  case dict.get(instruction, "c") |> result.unwrap(-1) {
+    // c-p-r
+    0 -> pr(int_code, pointer_offset_a)
+    _ -> -1
+  }
 }
