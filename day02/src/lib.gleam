@@ -30,3 +30,9 @@ pub fn make_instruction(op: Int) -> Instruction {
     padded_op |> string.to_graphemes |> list.filter_map(int.parse)
   dict.from_list(list.zip(keys, values))
 }
+
+pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
+  mem
+  |> iv.try_set(at: 1, to: noun)
+  |> iv.try_set(at: 2, to: verb)
+}
