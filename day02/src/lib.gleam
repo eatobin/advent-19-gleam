@@ -81,7 +81,7 @@ fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
   key_to_key(int_code, pointer_offset_param)
 }
 
-fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
+fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Value {
   iv.get_or_default(
     from: int_code.memory,
     at: iv.get_or_default(
@@ -104,7 +104,7 @@ fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
 fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
   case dict.get(instruction, "b") |> result.unwrap(-1) {
     // b-p-r
-    0 -> pr(int_code, pointer_offset_a)
+    0 -> pr(int_code, pointer_offset_b)
     _ -> -1
   }
 }
@@ -112,7 +112,7 @@ fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
 fn c_param(instruction: Instruction, int_code: IntCode) -> Int {
   case dict.get(instruction, "c") |> result.unwrap(-1) {
     // c-p-r
-    0 -> pr(int_code, pointer_offset_a)
+    0 -> pr(int_code, pointer_offset_c)
     _ -> -1
   }
 }
@@ -127,4 +127,35 @@ pub fn add(instruction: Instruction, int_code: IntCode) -> IntCode {
     ),
     actions: [Add, ..int_code.actions],
   )
+}
+
+pub fn multiply(instruction: Instruction, int_code: IntCode) -> IntCode {
+  IntCode(
+    pointer: int_code.pointer + 4,
+    memory: iv.try_set(
+      in: int_code.memory,
+      at: a_param(instruction, int_code),
+      to: { c_param(instruction, int_code) * b_param(instruction, int_code) },
+    ),
+    actions: [Multiply, ..int_code.actions],
+  )
+}
+
+pub fn exit(int_code: IntCode) -> IntCode {
+  IntCode(..int_code, actions: [Exit, ..int_code.actions])
+}
+
+pub fn run_op_code(int_code: IntCode) -> IntCode {
+  let instruction: Instruction =
+    make_instruction(iv.get_or_default(
+      from: int_code.memory,
+      at: int_code.pointer,
+      or: -1,
+    ))
+  case dict.get(instruction, "e") |> result.unwrap(-1) {
+    1 -> run_op_code(add(instruction, int_code))
+    2 -> run_op_code(multiply(instruction, int_code))
+    9 -> exit(int_code)
+    _ -> int_code
+  }
 }
