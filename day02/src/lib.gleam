@@ -116,3 +116,15 @@ fn c_param(instruction: Instruction, int_code: IntCode) -> Int {
     _ -> -1
   }
 }
+
+pub fn add(instruction: Instruction, int_code: IntCode) -> IntCode {
+  IntCode(
+    pointer: int_code.pointer + 4,
+    memory: iv.try_set(
+      in: int_code.memory,
+      at: a_param(instruction, int_code),
+      to: { c_param(instruction, int_code) + b_param(instruction, int_code) },
+    ),
+    actions: int_code.actions,
+  )
+}
