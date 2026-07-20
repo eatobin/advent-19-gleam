@@ -68,13 +68,26 @@ pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
   |> iv.try_set(at: 2, to: verb)
 }
 
-pub fn key_to_key(
-  int_code: IntCode,
-  pointer_offset_param: PointerOffset,
-) -> Key {
+fn key_to_key(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
   iv.get_or_default(
     from: int_code.memory,
     at: { int_code.pointer + pointer_offset_param },
+    or: -1,
+  )
+}
+
+fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
+  key_to_key(int_code, pointer_offset_param)
+}
+
+fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
+  iv.get_or_default(
+    from: int_code.memory,
+    at: iv.get_or_default(
+      from: int_code.memory,
+      at: key_to_key(int_code, pointer_offset_param),
+      or: -1,
+    ),
     or: -1,
   )
 }
