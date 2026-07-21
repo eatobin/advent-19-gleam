@@ -41,3 +41,9 @@ pub fn make_a_memory_test() {
   let this_memory = iv.from_list([10, 11, 1])
   lib.make_memory(memory_as_csv_string) |> should.equal(this_memory)
 }
+
+pub fn lookup_a_valid_memory_index_pw_test() {
+  let this_memory = iv.from_list([10, 11, 1])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.pw(int_code, 2) |> should.equal(1)
+}
