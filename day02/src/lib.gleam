@@ -82,15 +82,8 @@ pub fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
 }
 
 pub fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Value {
-  iv.get_or_default(
-    from: int_code.memory,
-    at: iv.get_or_default(
-      from: int_code.memory,
-      at: key_to_key(int_code, pointer_offset_param),
-      or: -1,
-    ),
-    or: -1,
-  )
+  let key = key_to_key(int_code, pointer_offset_param)
+  iv.get_or_default(from: int_code.memory, at: key, or: -1)
 }
 
 fn a_param(instruction: Instruction, int_code: IntCode) -> Int {

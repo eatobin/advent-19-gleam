@@ -47,3 +47,9 @@ pub fn lookup_a_valid_memory_index_pw_test() {
   let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
   lib.pw(int_code, 2) |> should.equal(1)
 }
+
+pub fn lookup_a_valid_memory_index_pr_test() {
+  let this_memory = iv.from_list([10, 11, 1])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.pr(int_code, 2) |> should.equal(11)
+}
