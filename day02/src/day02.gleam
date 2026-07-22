@@ -1,6 +1,7 @@
-// import gleam/int
-// import gleam/io
-// import iv
+import gleam/int
+import gleam/io
+import gleam/list
+import iv
 import lib
 
 pub fn main() {
@@ -15,8 +16,7 @@ pub fn main() {
     )
 
   let final_state_a = lib.run_op_code(initial_state)
-  // let answer_1 = iv.get_or_default(from: final_state_a.memory, at: 0, or: -1)
-  // io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
-  // echo final_state_a.actions
-  echo final_state_a
+  let answer_1 = iv.get_or_default(from: final_state_a.memory, at: 0, or: -1)
+  io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
+  echo list.reverse(final_state_a.actions)
 }
