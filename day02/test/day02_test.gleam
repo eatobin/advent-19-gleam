@@ -114,3 +114,16 @@ pub fn exit_test() {
     lib.IntCode(pointer: 22, memory: this_memory, actions: [lib.Exit]),
   )
 }
+
+pub fn aoc_memory_1_test() {
+  let aoc_memory_1 = "1,0,0,3,99"
+  lib.run_op_code(
+    lib.IntCode(pointer: 0, memory: lib.make_memory(aoc_memory_1), actions: []),
+  )
+  |> should.equal(
+    lib.IntCode(pointer: 4, memory: iv.from_list([1, 0, 0, 2, 99]), actions: [
+      lib.Exit,
+      lib.Add,
+    ]),
+  )
+}
