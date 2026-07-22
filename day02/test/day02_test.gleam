@@ -83,3 +83,14 @@ pub fn lookup_a_valid_c_param_test() {
   let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
   lib.c_param(instruction_1, int_code) |> should.equal(1)
 }
+
+pub fn one_plus_2_should_be_set_at_0_and_pointer_should_be_4_test() {
+  let instruction_1 =
+    dict.from_list([#("a", 0), #("b", 0), #("c", 0), #("d", 0), #("e", 6)])
+  let this_memory = iv.from_list([3, 2, 1, 0])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.add(instruction_1, int_code)
+  |> should.equal(
+    lib.IntCode(pointer: 4, memory: this_memory, actions: [lib.Add]),
+  )
+}
