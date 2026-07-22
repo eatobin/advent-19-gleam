@@ -208,3 +208,21 @@ pub fn aoc_memory_5_test() {
     ),
   )
 }
+
+pub fn aoc_memory_6_test() {
+  let this_aoc_memory = "1,1,1,4,99,5,6,0,99"
+  lib.run_op_code(
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.make_memory(this_aoc_memory),
+      actions: [],
+    ),
+  )
+  |> should.equal(
+    lib.IntCode(
+      pointer: 8,
+      memory: iv.from_list([30, 1, 1, 4, 2, 5, 6, 0, 99]),
+      actions: [lib.Exit, lib.Multiply, lib.Add],
+    ),
+  )
+}
