@@ -105,3 +105,12 @@ pub fn one_times_2_should_be_set_at_0_and_pointer_should_be_4_test() {
     lib.IntCode(pointer: 4, memory: this_memory, actions: [lib.Multiply]),
   )
 }
+
+pub fn exit_test() {
+  let this_memory = iv.from_list([22, 22, 22, 22])
+  let int_code = lib.IntCode(pointer: 22, memory: this_memory, actions: [])
+  lib.exit(int_code)
+  |> should.equal(
+    lib.IntCode(pointer: 22, memory: this_memory, actions: [lib.Exit]),
+  )
+}
