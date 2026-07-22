@@ -94,3 +94,14 @@ pub fn one_plus_2_should_be_set_at_0_and_pointer_should_be_4_test() {
     lib.IntCode(pointer: 4, memory: this_memory, actions: [lib.Add]),
   )
 }
+
+pub fn one_times_2_should_be_set_at_0_and_pointer_should_be_4_test() {
+  let instruction_1 =
+    dict.from_list([#("a", 0), #("b", 0), #("c", 0), #("d", 0), #("e", 6)])
+  let this_memory = iv.from_list([2, 2, 1, 0])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.multiply(instruction_1, int_code)
+  |> should.equal(
+    lib.IntCode(pointer: 4, memory: this_memory, actions: [lib.Multiply]),
+  )
+}
