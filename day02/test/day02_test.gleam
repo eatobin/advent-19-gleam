@@ -53,3 +53,33 @@ pub fn lookup_a_valid_memory_index_pr_test() {
   let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
   lib.pr(int_code, 2) |> should.equal(11)
 }
+
+pub fn lookup_an_invalid_memory_index_pr_test() {
+  let this_memory = iv.from_list([10, 11, 1])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.pw(int_code, 33) |> should.equal(-1)
+}
+
+pub fn lookup_a_valid_a_param_test() {
+  let instruction_1 =
+    dict.from_list([#("a", 0), #("b", 0), #("c", 0), #("d", 0), #("e", 6)])
+  let this_memory = iv.from_list([0, 2, 1, 0])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.a_param(instruction_1, int_code) |> should.equal(0)
+}
+
+pub fn lookup_a_valid_b_param_test() {
+  let instruction_1 =
+    dict.from_list([#("a", 0), #("b", 0), #("c", 0), #("d", 0), #("e", 6)])
+  let this_memory = iv.from_list([0, 2, 1, 0])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.b_param(instruction_1, int_code) |> should.equal(2)
+}
+
+pub fn lookup_a_valid_c_param_test() {
+  let instruction_1 =
+    dict.from_list([#("a", 0), #("b", 0), #("c", 0), #("d", 0), #("e", 6)])
+  let this_memory = iv.from_list([0, 2, 1, 0])
+  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
+  lib.c_param(instruction_1, int_code) |> should.equal(1)
+}
