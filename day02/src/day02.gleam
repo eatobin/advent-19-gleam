@@ -15,8 +15,21 @@ pub fn main() {
       actions: [],
     )
 
+  // Part A
   let final_state_a = lib.run_op_code(initial_state)
   let answer_1 = iv.get_or_default(from: final_state_a.memory, at: 0, or: -1)
   io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
   echo list.reverse(final_state_a.actions)
+
+  let numbers =
+    list.reverse(int.range(from: 1, to: 6, with: [], run: list.prepend))
+  echo numbers
+  // use letter <- list.flat_map(["a", "b", "c"])
+  // use number <- list.map([1, 2, 3])
+  // echo #(letter, number)
 }
+// [
+//   #("a", 1), #("a", 2), #("a", 3),
+//   #("b", 1), #("b", 2), #("b", 3),
+//   #("c", 1), #("c", 2), #("c", 3),
+// ]
