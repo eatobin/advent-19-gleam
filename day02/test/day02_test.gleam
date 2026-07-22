@@ -116,14 +116,95 @@ pub fn exit_test() {
 }
 
 pub fn aoc_memory_1_test() {
-  let aoc_memory_1 = "1,0,0,3,99"
+  let this_aoc_memory = "1,0,0,3,99"
   lib.run_op_code(
-    lib.IntCode(pointer: 0, memory: lib.make_memory(aoc_memory_1), actions: []),
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.make_memory(this_aoc_memory),
+      actions: [],
+    ),
   )
   |> should.equal(
     lib.IntCode(pointer: 4, memory: iv.from_list([1, 0, 0, 2, 99]), actions: [
       lib.Exit,
       lib.Add,
     ]),
+  )
+}
+
+pub fn aoc_memory_2_test() {
+  let this_aoc_memory = "1,9,10,3,2,3,11,0,99,30,40,50"
+  lib.run_op_code(
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.make_memory(this_aoc_memory),
+      actions: [],
+    ),
+  )
+  |> should.equal(
+    lib.IntCode(
+      pointer: 8,
+      memory: iv.from_list([3500, 9, 10, 70, 2, 3, 11, 0, 99, 30, 40, 50]),
+      actions: [
+        lib.Exit,
+        lib.Multiply,
+        lib.Add,
+      ],
+    ),
+  )
+}
+
+pub fn aoc_memory_3_test() {
+  let this_aoc_memory = "1,0,0,0,99"
+  lib.run_op_code(
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.make_memory(this_aoc_memory),
+      actions: [],
+    ),
+  )
+  |> should.equal(
+    lib.IntCode(pointer: 4, memory: iv.from_list([2, 0, 0, 0, 99]), actions: [
+      lib.Exit,
+      lib.Add,
+    ]),
+  )
+}
+
+pub fn aoc_memory_4_test() {
+  let this_aoc_memory = "2,3,0,3,99"
+  lib.run_op_code(
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.make_memory(this_aoc_memory),
+      actions: [],
+    ),
+  )
+  |> should.equal(
+    lib.IntCode(pointer: 4, memory: iv.from_list([2, 3, 0, 6, 99]), actions: [
+      lib.Exit,
+      lib.Multiply,
+    ]),
+  )
+}
+
+pub fn aoc_memory_5_test() {
+  let this_aoc_memory = "2,4,4,5,99,0"
+  lib.run_op_code(
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.make_memory(this_aoc_memory),
+      actions: [],
+    ),
+  )
+  |> should.equal(
+    lib.IntCode(
+      pointer: 4,
+      memory: iv.from_list([2, 4, 4, 5, 99, 9801]),
+      actions: [
+        lib.Exit,
+        lib.Multiply,
+      ],
+    ),
   )
 }
