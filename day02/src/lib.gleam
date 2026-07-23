@@ -70,11 +70,14 @@ pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
 }
 
 fn key_to_key(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
-  iv.get_or_default(
-    from: int_code.memory,
-    at: { int_code.pointer + pointer_offset_param },
-    or: -1,
-  )
+  let result =
+    iv.get(from: int_code.memory, at: {
+      int_code.pointer + pointer_offset_param
+    })
+  case result {
+    Ok(key) -> key
+    Error(Nil) -> panic as "Key is out of range!"
+  }
 }
 
 pub fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {

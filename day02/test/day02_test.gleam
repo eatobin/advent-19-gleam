@@ -54,12 +54,6 @@ pub fn lookup_a_valid_memory_index_pr_test() {
   lib.pr(int_code, 2) |> should.equal(11)
 }
 
-pub fn lookup_an_invalid_memory_index_pr_test() {
-  let this_memory = iv.from_list([10, 11, 1])
-  let int_code = lib.IntCode(pointer: 0, memory: this_memory, actions: [])
-  lib.pw(int_code, 33) |> should.equal(-1)
-}
-
 pub fn lookup_a_valid_a_param_test() {
   let instruction_1 =
     dict.from_list([#("a", 0), #("b", 0), #("c", 0), #("d", 0), #("e", 6)])
