@@ -8,7 +8,7 @@ import iv
 type MemoryAsCSVString =
   String
 
-type Memory =
+pub type Memory =
   iv.Array(Int)
 
 type Key =
