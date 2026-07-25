@@ -30,7 +30,7 @@ pub fn candidate_pairs() -> List(#(Int, Int)) {
   #(noun, verb)
 }
 
-pub fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> Int {
+fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
   let result =
     lib.run_op_code(
       lib.IntCode(
@@ -43,7 +43,12 @@ pub fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> Int {
         actions: [],
       ),
     )
-  iv.get_or_default(from: result.memory, at: 0, or: -1)
+  #(candidate_pair, iv.get_or_default(from: result.memory, at: 0, or: -1))
+}
+
+fn map_over_pairs() -> List(#(#(Int, Int), Int)) {
+  let pairs = candidate_pairs()
+  list.map(pairs, run_a_candidate_pair)
 }
 
 fn make_this_memory() -> lib.Memory {
@@ -53,7 +58,7 @@ fn make_this_memory() -> lib.Memory {
 }
 
 pub fn main() {
-  echo run_a_candidate_pair(#(12, 2))
+  echo map_over_pairs()
   let initial_state =
     lib.IntCode(
       pointer: 0,
