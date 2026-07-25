@@ -1,30 +1,21 @@
 import gleam/int
 import gleam/io
 import gleam/list
+import gleam/result
 import iv
 import lib
 
-// pub fn answer_2() -> List(#(Int, Int)) {
-//   use noun <- list.map(
-//     list.reverse(int.range(from: 0, to: 6, with: [], run: list.prepend)),
-//   )
-//   use verb <- list.flat_map(
-//     list.reverse(int.range(from: 0, to: 6, with: [], run: list.prepend)),
-//   )
-//   #(noun, verb)
-// }
+fn make_this_memory() -> lib.Memory {
+  let memory_as_csv_string =
+    "1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,10,1,19,2,9,19,23,2,13,23,27,1,6,27,31,2,6,31,35,2,13,35,39,1,39,10,43,2,43,13,47,1,9,47,51,1,51,13,55,1,55,13,59,2,59,13,63,1,63,6,67,2,6,67,71,1,5,71,75,2,6,75,79,1,5,79,83,2,83,6,87,1,5,87,91,1,6,91,95,2,95,6,99,1,5,99,103,1,6,103,107,1,107,2,111,1,111,5,0,99,2,14,0,0"
+  lib.make_memory(memory_as_csv_string)
+}
 
-// pub fn tester() -> List(#(String, Int)) {
-//   use letter <- list.flat_map(["a", "b", "c"])
-//   use number <- list.map([1, 2, 3])
-//   #(letter, number)
-// }
-
-pub fn candidate_pairs() -> List(#(Int, Int)) {
+fn candidate_pairs() -> List(#(Int, Int)) {
   let nouns =
-    list.reverse(int.range(from: 0, to: 4, with: [], run: list.prepend))
+    list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
   let verbs =
-    list.reverse(int.range(from: 10, to: 14, with: [], run: list.prepend))
+    list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
   use noun <- list.flat_map(nouns)
   use verb <- list.map(verbs)
   #(noun, verb)
@@ -51,14 +42,19 @@ fn map_over_pairs() -> List(#(#(Int, Int), Int)) {
   list.map(pairs, run_a_candidate_pair)
 }
 
-fn make_this_memory() -> lib.Memory {
-  let memory_as_csv_string =
-    "1,0,0,3,1,1,2,3,1,3,4,3,1,5,0,3,2,10,1,19,2,9,19,23,2,13,23,27,1,6,27,31,2,6,31,35,2,13,35,39,1,39,10,43,2,43,13,47,1,9,47,51,1,51,13,55,1,55,13,59,2,59,13,63,1,63,6,67,2,6,67,71,1,5,71,75,2,6,75,79,1,5,79,83,2,83,6,87,1,5,87,91,1,6,91,95,2,95,6,99,1,5,99,103,1,6,103,107,1,107,2,111,1,111,5,0,99,2,14,0,0"
-  lib.make_memory(memory_as_csv_string)
+fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
+  let #(#(_, _), calculation) = candidate
+  calculation == 19_690_720
+}
+
+fn find_winner() -> #(#(Int, Int), Int) {
+  let candidates = map_over_pairs()
+  list.filter(candidates, winner_is)
+  |> list.first
+  |> result.unwrap(#(#(-1, -1), -1))
 }
 
 pub fn main() {
-  echo map_over_pairs()
   let initial_state =
     lib.IntCode(
       pointer: 0,
@@ -72,19 +68,32 @@ pub fn main() {
   io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
   echo list.reverse(final_state_a.actions)
 
-  // Define a tuple containing mixed types
-  let nope = #(#(1, 2), 20)
+  // Part B
+  let #(#(noun, verb), _) = find_winner()
+  let answer_2 = {
+    { 100 * noun } + verb
+  }
+  io.println("\nPart B: " <> int.to_string(answer_2) <> ", correct: 8226")
+  // // Define a tuple containing mixed types
+  // let nope = #(#(1, 2), 20)
 
-  // Pattern match to extract all values
-  let #(#(one, two), twenty) = nope
+  // // Pattern match to extract all values
+  // let #(#(one, two), twenty) = nope
 
-  // Use an underscore (_) to discard values you don't need
-  let #(#(_, _), only_twenty) = nope
+  // // Use an underscore (_) to discard values you don't need
+  // let #(#(_, _), only_twenty) = nope
+  // "Part B: %i{answer2}, correct: 8226\n"
+  // echo one
+  // echo two
+  // echo twenty
+  // echo only_twenty
 
-  echo one
-  echo two
-  echo twenty
-  echo only_twenty
+  // let numbers = [1, 2, 3, 4, 5, 6]
+
+  // Keep only even numbers
+  // let evens = list.filter(numbers, fn(x) { x % 2 == 0 })
+  // if (candidate = 19_690_720) then
+  //                         yield (100 * noun) + verb ]
   // Part B
   // echo candidate_pairs()
   // let nouns =
