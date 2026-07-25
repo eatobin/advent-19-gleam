@@ -55,7 +55,7 @@ fn find_winner() -> #(#(Int, Int), Int) {
 }
 
 pub fn main() {
-  let initial_state =
+  let initial_state_a =
     lib.IntCode(
       pointer: 0,
       memory: lib.updated_memory(12, 2, make_this_memory()),
@@ -63,7 +63,7 @@ pub fn main() {
     )
 
   // Part A
-  let final_state_a = lib.run_op_code(initial_state)
+  let final_state_a = lib.run_op_code(initial_state_a)
   let answer_1 = iv.get_or_default(from: final_state_a.memory, at: 0, or: -1)
   io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
   echo list.reverse(final_state_a.actions)
@@ -74,4 +74,12 @@ pub fn main() {
     { 100 * noun } + verb
   }
   io.println("\nPart B: " <> int.to_string(answer_2) <> ", correct: 8226")
+  let initial_state_b =
+    lib.IntCode(
+      pointer: 0,
+      memory: lib.updated_memory(noun, verb, make_this_memory()),
+      actions: [],
+    )
+  let final_state_b = lib.run_op_code(initial_state_b)
+  echo list.reverse(final_state_b.actions)
 }
