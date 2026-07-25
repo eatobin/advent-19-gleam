@@ -71,6 +71,20 @@ pub fn main() {
   let answer_1 = iv.get_or_default(from: final_state_a.memory, at: 0, or: -1)
   io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
   echo list.reverse(final_state_a.actions)
+
+  // Define a tuple containing mixed types
+  let nope = #(#(1, 2), 20)
+
+  // Pattern match to extract all values
+  let #(#(one, two), twenty) = nope
+
+  // Use an underscore (_) to discard values you don't need
+  let #(#(_, _), only_twenty) = nope
+
+  echo one
+  echo two
+  echo twenty
+  echo only_twenty
   // Part B
   // echo candidate_pairs()
   // let nouns =
