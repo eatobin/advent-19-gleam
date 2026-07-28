@@ -46,13 +46,6 @@ fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
   calculation == 19_690_720
 }
 
-// fn find_winner() -> #(#(Int, Int), Int) {
-//   let candidates = map_over_pairs()
-//   list.filter(candidates, winner_is)
-//   |> list.first
-//   |> result.unwrap(#(#(-1, -1), -1))
-// }
-
 fn find_winner() -> #(#(Int, Int), Int) {
   map_over_pairs()
   |> list.filter(winner_is)
