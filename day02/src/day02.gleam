@@ -38,8 +38,7 @@ fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
 }
 
 fn map_over_pairs() -> List(#(#(Int, Int), Int)) {
-  let pairs = candidate_pairs()
-  list.map(pairs, run_a_candidate_pair)
+  candidate_pairs() |> list.map(run_a_candidate_pair)
 }
 
 fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
