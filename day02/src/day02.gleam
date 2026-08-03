@@ -12,13 +12,23 @@ fn make_this_memory() -> lib.Memory {
 }
 
 fn candidate_pairs() -> List(#(Int, Int)) {
-  let nouns =
+  let nouns: List(Int) =
     list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
-  let verbs =
+  let verbs: List(Int) =
     list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
   use noun <- list.flat_map(nouns)
   use verb <- list.map(verbs)
   #(noun, verb)
+}
+
+// https://erikarow.land/notes/using-use-gleam
+fn catify_without_use(strings: List(String)) -> List(String) {
+  list.map(strings, fn(this_string: String) { this_string <> " cat" })
+}
+
+fn catify_with_use(strings: List(String)) -> List(String) {
+  use this_string <- list.map(strings)
+  this_string <> " cat"
 }
 
 fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
