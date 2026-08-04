@@ -11,24 +11,25 @@ fn make_this_memory() -> lib.Memory {
   lib.make_memory(memory_as_csv_string)
 }
 
+// https://erikarow.land/notes/using-use-gleam
+// fn catify_without_use(strings: List(String)) -> List(String) {
+//   list.map(strings, fn(this_string: String) { this_string <> " cat" })
+// }
+// fn catify_with_use(strings: List(String)) -> List(String) {
+//   use this_string <- list.map(strings)
+//   this_string <> " cat"
+// }
+
 fn candidate_pairs() -> List(#(Int, Int)) {
   let nouns: List(Int) =
     list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
   let verbs: List(Int) =
-    list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
+    list.reverse(int.range(from: 10, to: 100, with: [], run: list.prepend))
+  // outer loop
   use noun <- list.flat_map(nouns)
+  // inner loop
   use verb <- list.map(verbs)
   #(noun, verb)
-}
-
-// https://erikarow.land/notes/using-use-gleam
-fn catify_without_use(strings: List(String)) -> List(String) {
-  list.map(strings, fn(this_string: String) { this_string <> " cat" })
-}
-
-fn catify_with_use(strings: List(String)) -> List(String) {
-  use this_string <- list.map(strings)
-  this_string <> " cat"
 }
 
 fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
