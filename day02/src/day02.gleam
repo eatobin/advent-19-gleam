@@ -20,7 +20,7 @@ fn make_this_memory() -> lib.Memory {
 //   this_string <> " cat"
 // }
 
-fn candidate_pairs() -> List(#(Int, Int)) {
+fn make_candidate_pairs() -> List(#(Int, Int)) {
   let nouns: List(Int) =
     list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
   let verbs: List(Int) =
@@ -49,7 +49,7 @@ fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
 }
 
 fn map_over_pairs() -> List(#(#(Int, Int), Int)) {
-  candidate_pairs() |> list.map(run_a_candidate_pair)
+  make_candidate_pairs() |> list.map(run_a_candidate_pair)
 }
 
 fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
