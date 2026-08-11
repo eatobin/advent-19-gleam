@@ -100,15 +100,3 @@ pub fn main() {
   let final_state_b = lib.run_op_code(initial_state_b)
   echo list.reverse(final_state_b.actions)
 }
-// fn add(a: Int, b: Int) -> Int {
-//   a + b
-// }
-
-// pub fn main() {
-//   // Fix the first argument 'a' to 1
-//   let add_one = add(1, _)
-//   // Equivalent to: let add_one = fn(x) { add(1, x) }
-
-//   let result = add_one(5)
-//   echo result
-// }
