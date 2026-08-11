@@ -45,8 +45,11 @@ fn run_a_candidate_pair(
   #(candidate_pair, iv.get_or_default(from: result.memory, at: 0, or: -1))
 }
 
-fn map_over_pairs(memory: lib.Memory) -> List(#(#(Int, Int), Int)) {
-  make_candidate_pairs() |> list.map(run_a_candidate_pair(memory, _))
+fn map_over_pairs(
+  pairs: List(#(Int, Int)),
+  memory: lib.Memory,
+) -> List(#(#(Int, Int), Int)) {
+  pairs |> list.map(run_a_candidate_pair(memory, _))
 }
 
 fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
@@ -54,8 +57,11 @@ fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
   calculation == 19_690_720
 }
 
-fn find_winner(memory: lib.Memory) -> #(#(Int, Int), Int) {
-  map_over_pairs(memory)
+fn find_winner(
+  pairs: List(#(Int, Int)),
+  memory: lib.Memory,
+) -> #(#(Int, Int), Int) {
+  map_over_pairs(pairs, memory)
   |> list.filter(winner_is)
   |> list.first
   |> result.unwrap(#(#(-1, -1), -1))
@@ -79,7 +85,8 @@ pub fn main() {
   echo list.reverse(final_state_a.actions)
 
   // Part B
-  let #(#(noun, verb), _) = find_winner(the_main_memory)
+  let pairs: List(#(Int, Int)) = make_candidate_pairs()
+  let #(#(noun, verb), _) = find_winner(pairs, the_main_memory)
   let answer_2 = {
     { 100 * noun } + verb
   }
