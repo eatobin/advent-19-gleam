@@ -33,6 +33,7 @@ fn make_candidate_pairs() -> List(#(Int, Int)) {
 }
 
 fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
+  let this_memory = make_this_memory()
   let result =
     lib.run_op_code(
       lib.IntCode(
@@ -40,7 +41,7 @@ fn run_a_candidate_pair(candidate_pair: #(Int, Int)) -> #(#(Int, Int), Int) {
         memory: lib.updated_memory(
           candidate_pair.0,
           candidate_pair.1,
-          make_this_memory(),
+          this_memory,
         ),
         actions: [],
       ),
@@ -65,10 +66,11 @@ fn find_winner() -> #(#(Int, Int), Int) {
 }
 
 pub fn main() {
+  let the_main_memory = make_this_memory()
   let initial_state_a =
     lib.IntCode(
       pointer: 0,
-      memory: lib.updated_memory(12, 2, make_this_memory()),
+      memory: lib.updated_memory(12, 2, the_main_memory),
       actions: [],
     )
 
@@ -87,7 +89,7 @@ pub fn main() {
   let initial_state_b =
     lib.IntCode(
       pointer: 0,
-      memory: lib.updated_memory(noun, verb, make_this_memory()),
+      memory: lib.updated_memory(noun, verb, the_main_memory),
       actions: [],
     )
   let final_state_b = lib.run_op_code(initial_state_b)
