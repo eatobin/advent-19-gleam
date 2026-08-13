@@ -36,6 +36,19 @@ pub type IntCode {
   IntCode(pointer: Pointer, memory: Memory, actions: Actions)
 }
 
+type Candidate = Int
+
+type CandidatePair = (Candidate, Candidate)
+
+type CandidatePairList = List(CandidatePair)
+
+type Winner = Int
+
+type PairAndWinner = (CandidatePair, Winner)
+
+type PairAndWinnerList = List(PairAndWinner)
+
+
 type PointerOffset =
   Int
 
