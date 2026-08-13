@@ -36,17 +36,23 @@ pub type IntCode {
   IntCode(pointer: Pointer, memory: Memory, actions: Actions)
 }
 
-type Candidate = Int
+type Candidate =
+  Int
 
-type CandidatePair = (Candidate, Candidate)
+type CandidatePair =
+  #(Candidate, Candidate)
 
-type CandidatePairList = List(CandidatePair)
+type CandidatePairList =
+  List(CandidatePair)
 
-type Winner = Int
+type Winner =
+  Int
 
-type PairAndWinner = (CandidatePair, Winner)
+type PairAndWinner =
+  #(CandidatePair, Winner)
 
-type PairAndWinnerList = List(PairAndWinner)
+type PairAndWinnerList =
+  List(PairAndWinner)
 
 type PointerOffset =
   Int
@@ -98,7 +104,7 @@ pub fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
 
 pub fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Value {
   let key = key_to_key(int_code, pointer_offset_param)
-  iv.get_or_default(from: int_code.memory, at: key, or: panic as "pr key is out of range!")
+  iv.get_or_default(from: int_code.memory, at: key, or: -1)
 }
 
 pub fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
@@ -168,11 +174,11 @@ pub fn run_op_code(int_code: IntCode) -> IntCode {
   }
 }
 
-pub fn make_this_memory(memory_as_csv_string: String) -> Memory {
+pub fn make_this_memory(memory_as_csv_string: MemoryAsCSVString) -> Memory {
   make_memory(memory_as_csv_string)
 }
 
-pub fn make_candidate_pairs() -> List(#(Int, Int)) {
+pub fn make_candidate_pairs() -> CandidatePairList {
   let nouns: List(Int) =
     list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
   let verbs: List(Int) =
@@ -186,8 +192,8 @@ pub fn make_candidate_pairs() -> List(#(Int, Int)) {
 
 pub fn run_a_candidate_pair(
   memory: Memory,
-  candidate_pair: #(Int, Int),
-) -> #(#(Int, Int), Int) {
+  candidate_pair: CandidatePair,
+) -> PairAndWinner {
   let result =
     run_op_code(
       IntCode(
@@ -200,21 +206,18 @@ pub fn run_a_candidate_pair(
 }
 
 pub fn map_over_pairs(
-  pairs: List(#(Int, Int)),
+  pairs: CandidatePairList,
   memory: Memory,
-) -> List(#(#(Int, Int), Int)) {
+) -> PairAndWinnerList {
   pairs |> list.map(run_a_candidate_pair(memory, _))
 }
 
-pub fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
-  let #(#(_, _), calculation) = candidate
+pub fn winner_is(candidate_pw: PairAndWinner) -> Bool {
+  let #(#(_, _), calculation) = candidate_pw
   calculation == 19_690_720
 }
 
-pub fn find_winner(
-  pairs: List(#(Int, Int)),
-  memory: Memory,
-) -> #(#(Int, Int), Int) {
+pub fn find_winner(pairs: CandidatePairList, memory: Memory) -> PairAndWinner {
   map_over_pairs(pairs, memory)
   |> list.filter(winner_is)
   |> list.first
