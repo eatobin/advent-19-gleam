@@ -48,7 +48,6 @@ type PairAndWinner = (CandidatePair, Winner)
 
 type PairAndWinnerList = List(PairAndWinner)
 
-
 type PointerOffset =
   Int
 
