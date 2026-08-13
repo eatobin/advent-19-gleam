@@ -155,3 +155,56 @@ pub fn run_op_code(int_code: IntCode) -> IntCode {
     _ -> int_code
   }
 }
+
+pub fn make_this_memory(memory_as_csv_string: String) -> Memory {
+  make_memory(memory_as_csv_string)
+}
+
+pub fn make_candidate_pairs() -> List(#(Int, Int)) {
+  let nouns: List(Int) =
+    list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
+  let verbs: List(Int) =
+    list.reverse(int.range(from: 10, to: 100, with: [], run: list.prepend))
+  // outer loop
+  use noun <- list.flat_map(nouns)
+  // inner loop
+  use verb <- list.map(verbs)
+  #(noun, verb)
+}
+
+pub fn run_a_candidate_pair(
+  memory: Memory,
+  candidate_pair: #(Int, Int),
+) -> #(#(Int, Int), Int) {
+  let result =
+    run_op_code(
+      IntCode(
+        pointer: 0,
+        memory: updated_memory(candidate_pair.0, candidate_pair.1, memory),
+        actions: [],
+      ),
+    )
+  #(candidate_pair, iv.get_or_default(from: result.memory, at: 0, or: -1))
+}
+
+pub fn map_over_pairs(
+  pairs: List(#(Int, Int)),
+  memory: Memory,
+) -> List(#(#(Int, Int), Int)) {
+  pairs |> list.map(run_a_candidate_pair(memory, _))
+}
+
+pub fn winner_is(candidate: #(#(Int, Int), Int)) -> Bool {
+  let #(#(_, _), calculation) = candidate
+  calculation == 19_690_720
+}
+
+pub fn find_winner(
+  pairs: List(#(Int, Int)),
+  memory: Memory,
+) -> #(#(Int, Int), Int) {
+  map_over_pairs(pairs, memory)
+  |> list.filter(winner_is)
+  |> list.first
+  |> result.unwrap(#(#(-1, -1), -1))
+}
