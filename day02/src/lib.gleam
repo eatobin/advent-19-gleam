@@ -190,7 +190,7 @@ pub fn make_candidate_pairs() -> CandidatePairList {
   #(noun, verb)
 }
 
-pub fn run_a_candidate_pair(
+fn run_a_candidate_pair(
   memory: Memory,
   candidate_pair: CandidatePair,
 ) -> PairAndWinner {
@@ -205,14 +205,14 @@ pub fn run_a_candidate_pair(
   #(candidate_pair, iv.get_or_default(from: result.memory, at: 0, or: -1))
 }
 
-pub fn map_over_pairs(
+fn map_over_pairs(
   pairs: CandidatePairList,
   memory: Memory,
 ) -> PairAndWinnerList {
   pairs |> list.map(run_a_candidate_pair(memory, _))
 }
 
-pub fn winner_is(candidate_pw: PairAndWinner) -> Bool {
+fn winner_is(candidate_pw: PairAndWinner) -> Bool {
   let #(#(_, _), calculation) = candidate_pw
   calculation == 19_690_720
 }
