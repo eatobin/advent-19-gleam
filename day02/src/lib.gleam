@@ -88,14 +88,12 @@ pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
 }
 
 fn key_to_key(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
-  let result =
+  let assert Ok(key) =
     iv.get(from: int_code.memory, at: {
       int_code.pointer + pointer_offset_param
     })
-  case result {
-    Ok(key) -> key
-    Error(Nil) -> panic as "Key is out of range!"
-  }
+    as "key_to_key error"
+  key
 }
 
 pub fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
@@ -104,7 +102,8 @@ pub fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
 
 pub fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Value {
   let key = key_to_key(int_code, pointer_offset_param)
-  iv.get_or_default(from: int_code.memory, at: key, or: -1)
+  let assert Ok(value) = iv.get(from: int_code.memory, at: key) as "pr error"
+  value
 }
 
 pub fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
