@@ -129,11 +129,14 @@ pub fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
 }
 
 pub fn c_param(instruction: Instruction, int_code: IntCode) -> Int {
-  case dict.get(instruction, "c") |> result.unwrap(-1) {
+  let assert Ok(instruction_result) = dict.get(instruction, "c") as "dict error"
+  let assert Ok(c_param_result) = case instruction_result {
     // c-p-r
-    0 -> pr(int_code, pointer_offset_c)
-    _ -> -1
+    0 -> Ok(pr(int_code, pointer_offset_c))
+    _ -> Error(Nil)
   }
+    as "c_param error"
+  c_param_result
 }
 
 pub fn add(instruction: Instruction, int_code: IntCode) -> IntCode {
