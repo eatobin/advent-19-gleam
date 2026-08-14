@@ -167,6 +167,7 @@ pub fn exit(int_code: IntCode) -> IntCode {
   IntCode(..int_code, actions: [Exit, ..int_code.actions])
 }
 
+// TODO: Do 1
 pub fn run_op_code(int_code: IntCode) -> IntCode {
   let instruction: Instruction =
     make_instruction(iv.get_or_default(
@@ -198,6 +199,7 @@ pub fn make_candidate_pairs() -> CandidatePairList {
   #(noun, verb)
 }
 
+// TODO: Do 2
 fn run_a_candidate_pair(
   memory: Memory,
   candidate_pair: CandidatePair,
@@ -225,6 +227,7 @@ fn winner_is(candidate_pw: PairAndWinner) -> Bool {
   calculation == 19_690_720
 }
 
+// TODO: Do 3
 pub fn find_winner(pairs: CandidatePairList, memory: Memory) -> PairAndWinner {
   map_over_pairs(pairs, memory)
   |> list.filter(winner_is)
