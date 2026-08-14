@@ -107,11 +107,14 @@ pub fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Value {
 }
 
 pub fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
-  case dict.get(instruction, "a") |> result.unwrap(-1) {
+  let assert Ok(instruction_result) = dict.get(instruction, "a") as "dict error"
+  let assert Ok(a_param_result) = case instruction_result {
     // a-p-w
-    0 -> pw(int_code, pointer_offset_a)
-    _ -> -1
+    0 -> Ok(pw(int_code, pointer_offset_a))
+    _ -> Error(Nil)
   }
+    as "a_param error"
+  a_param_result
 }
 
 pub fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
