@@ -231,6 +231,6 @@ pub fn find_winner(pairs: CandidatePairList, memory: Memory) -> PairAndWinner {
     map_over_pairs(pairs, memory)
     |> list.filter(winner_is)
     |> list.first
-  let assert Ok(pw) = maybe_pw
+  let assert Ok(pw) = maybe_pw as "pw error"
   pw
 }
