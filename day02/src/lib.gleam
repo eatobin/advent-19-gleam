@@ -1,7 +1,6 @@
 import gleam/dict
 import gleam/int
 import gleam/list
-import gleam/result
 import gleam/string
 import iv
 
@@ -227,10 +226,11 @@ fn winner_is(candidate_pw: PairAndWinner) -> Bool {
   calculation == 19_690_720
 }
 
-// TODO: Do 3
 pub fn find_winner(pairs: CandidatePairList, memory: Memory) -> PairAndWinner {
-  map_over_pairs(pairs, memory)
-  |> list.filter(winner_is)
-  |> list.first
-  |> result.unwrap(#(#(-1, -1), -1))
+  let maybe_pw =
+    map_over_pairs(pairs, memory)
+    |> list.filter(winner_is)
+    |> list.first
+  let assert Ok(pw) = maybe_pw
+  pw
 }
