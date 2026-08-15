@@ -167,15 +167,14 @@ pub fn exit(int_code: IntCode) -> IntCode {
   IntCode(..int_code, actions: [Exit, ..int_code.actions])
 }
 
-// TODO: Do 1
 pub fn run_op_code(int_code: IntCode) -> IntCode {
-  let instruction: Instruction =
-    make_instruction(iv.get_or_default(
-      from: int_code.memory,
-      at: int_code.pointer,
-      or: -1,
-    ))
-  case dict.get(instruction, "e") |> result.unwrap(-1) {
+  let assert Ok(instruction_value) =
+    iv.get(from: int_code.memory, at: int_code.pointer)
+    as "instruction value error"
+  let instruction = make_instruction(instruction_value)
+  let assert Ok(instruction_map_value) = dict.get(instruction, "e")
+    as "instruction map error"
+  case instruction_map_value {
     1 -> run_op_code(add(instruction, int_code))
     2 -> run_op_code(multiply(instruction, int_code))
     9 -> exit(int_code)
@@ -199,7 +198,6 @@ pub fn make_candidate_pairs() -> CandidatePairList {
   #(noun, verb)
 }
 
-// TODO: Do 2
 fn run_a_candidate_pair(
   memory: Memory,
   candidate_pair: CandidatePair,
@@ -212,7 +210,9 @@ fn run_a_candidate_pair(
         actions: [],
       ),
     )
-  #(candidate_pair, iv.get_or_default(from: result.memory, at: 0, or: -1))
+  let assert Ok(result_memory) = iv.get(from: result.memory, at: 0)
+    as "result memory error"
+  #(candidate_pair, result_memory)
 }
 
 fn map_over_pairs(
