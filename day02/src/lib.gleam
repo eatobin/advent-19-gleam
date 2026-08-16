@@ -4,6 +4,19 @@ import gleam/list
 import gleam/string
 import iv
 
+// Instruction:
+// ABCDE
+// 01234
+// 01002
+// 34(DE) - two-digit opcode,      02 == opcode 2
+//  2(C) - mode of 1st parameter,  0 == position mode
+//  1(B) - mode of 2nd parameter,  1 == immediate mode
+//  0(A) - mode of 3rd parameter,  0 == position mode,
+//                                   omitted due to being a leading zero
+// 0 1 or 2 = left-to-right position after 2 digit opcode
+// p i or r = position, immediate or relative mode
+// r or w = read or write
+
 type MemoryAsCSVString =
   String
 
@@ -86,6 +99,11 @@ pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
   |> iv.try_set(at: 2, to: verb)
 }
 
+// For example, if your Intcode computer encounters 1,10,20,30,
+// it should read the values at positions 10 and 20, add those values,
+// and then overwrite the value at position 30 with their sum.
+
+// address will be 10, 20 or 30 or key will be 10, 20 or 30
 fn key_to_key(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
   let assert Ok(key) =
     iv.get(from: int_code.memory, at: {
@@ -95,16 +113,19 @@ fn key_to_key(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
   key
 }
 
+// write to position 30
 pub fn pw(int_code: IntCode, pointer_offset_param: PointerOffset) -> Key {
   key_to_key(int_code, pointer_offset_param)
 }
 
+// read value at position 10 or 20
 pub fn pr(int_code: IntCode, pointer_offset_param: PointerOffset) -> Value {
   let key = key_to_key(int_code, pointer_offset_param)
   let assert Ok(value) = iv.get(from: int_code.memory, at: key) as "pr error"
   value
 }
 
+// write to position 30
 pub fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
   let assert Ok(instruction_result) = dict.get(instruction, "a") as "dict error"
   let assert Ok(a_param_result) = case instruction_result {
@@ -116,6 +137,7 @@ pub fn a_param(instruction: Instruction, int_code: IntCode) -> Int {
   a_param_result
 }
 
+// read value at position 20
 pub fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
   let assert Ok(instruction_result) = dict.get(instruction, "b") as "dict error"
   let assert Ok(b_param_result) = case instruction_result {
@@ -127,6 +149,7 @@ pub fn b_param(instruction: Instruction, int_code: IntCode) -> Int {
   b_param_result
 }
 
+// read value at position 10
 pub fn c_param(instruction: Instruction, int_code: IntCode) -> Int {
   let assert Ok(instruction_result) = dict.get(instruction, "c") as "dict error"
   let assert Ok(c_param_result) = case instruction_result {
