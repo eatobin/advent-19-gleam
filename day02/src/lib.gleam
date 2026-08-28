@@ -196,7 +196,6 @@ pub fn run_op_code(int_code: IntCode) -> IntCode {
   let instruction = make_instruction(instruction_value)
   let assert Ok(instruction_map_value) = dict.get(instruction, "e")
     as "instruction map error"
-  // TODO: add an assert 
   case instruction_map_value {
     1 -> run_op_code(add(instruction, int_code))
     2 -> run_op_code(multiply(instruction, int_code))
