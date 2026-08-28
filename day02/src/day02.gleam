@@ -17,7 +17,8 @@ pub fn main() {
 
   // Part A
   let final_state_a = lib.run_op_code(initial_state_a)
-  let answer_1 = iv.get_or_default(from: final_state_a.memory, at: 0, or: -1)
+  let assert Ok(answer_1) = iv.get(from: final_state_a.memory, at: 0)
+    as "array lookup error"
   io.println("\nPart A: " <> int.to_string(answer_1) <> ", correct: 2890696")
   echo list.reverse(final_state_a.actions)
 
