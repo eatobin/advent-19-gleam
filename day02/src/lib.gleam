@@ -196,12 +196,14 @@ pub fn run_op_code(int_code: IntCode) -> IntCode {
   let instruction = make_instruction(instruction_value)
   let assert Ok(instruction_map_value) = dict.get(instruction, "e")
     as "instruction map error"
-  case instruction_map_value {
-    1 -> run_op_code(add(instruction, int_code))
-    2 -> run_op_code(multiply(instruction, int_code))
-    9 -> exit(int_code)
-    _ -> int_code
+  let assert Ok(run_opcode_result) = case instruction_map_value {
+    1 -> Ok(run_op_code(add(instruction, int_code)))
+    2 -> Ok(run_op_code(multiply(instruction, int_code)))
+    9 -> Ok(exit(int_code))
+    _ -> Error(Nil)
   }
+    as "run_op_code error"
+  run_opcode_result
 }
 
 pub fn make_this_memory(memory_as_csv_string: MemoryAsCSVString) -> Memory {
