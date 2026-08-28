@@ -48,11 +48,14 @@ pub type IntCode {
   IntCode(pointer: Pointer, memory: Memory, actions: Actions)
 }
 
-type Candidate =
+type Noun =
+  Int
+
+type Verb =
   Int
 
 type CandidatePair =
-  #(Candidate, Candidate)
+  #(Noun, Verb)
 
 type CandidatePairList =
   List(CandidatePair)
@@ -93,7 +96,7 @@ pub fn make_instruction(op: Int) -> Instruction {
   dict.from_list(list.zip(keys, values))
 }
 
-pub fn updated_memory(noun: Int, verb: Int, mem: Memory) -> Memory {
+pub fn updated_memory(noun: Noun, verb: Verb, mem: Memory) -> Memory {
   mem
   |> iv.try_set(at: 1, to: noun)
   |> iv.try_set(at: 2, to: verb)
@@ -211,9 +214,9 @@ pub fn make_this_memory(memory_as_csv_string: MemoryAsCSVString) -> Memory {
 }
 
 pub fn make_candidate_pairs() -> CandidatePairList {
-  let nouns: List(Int) =
+  let nouns: List(Noun) =
     list.reverse(int.range(from: 0, to: 100, with: [], run: list.prepend))
-  let verbs: List(Int) =
+  let verbs: List(Verb) =
     list.reverse(int.range(from: 10, to: 100, with: [], run: list.prepend))
   // outer loop
   use noun <- list.flat_map(nouns)
