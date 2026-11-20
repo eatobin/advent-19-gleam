@@ -1,3 +1,5 @@
+// this is a comment in zed
+
 import gleam/list
 
 fn gas(my_module: Int) -> Int {
